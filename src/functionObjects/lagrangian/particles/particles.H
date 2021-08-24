@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2016-2020 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2016-2021 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -25,8 +25,8 @@ Class
     Foam::functionObjects::particles
 
 Description
-    This functionObject tracks a uncoupled kinematic particle cloud in the
-    specified velocity field of an incompressible flow (laminar, RANS or LES).
+    This functionObject tracks a particle cloud in the specified velocity field
+    of an incompressible flow (laminar, RANS or LES).
 
     It may be used in conjunction with any transient single-phase incompressible
     flow solver such as pisoFoam or pimpleFoam and tracks the particles or
