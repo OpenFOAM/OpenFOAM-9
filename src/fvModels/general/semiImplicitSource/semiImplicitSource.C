@@ -76,30 +76,19 @@ void Foam::fv::semiImplicitSource::readCoeffs()
     }
 
     // Set field source terms
-    fieldSp_.clear();
     fieldSu_.clear();
+    fieldSp_.clear();
     forAllConstIter(dictionary, coeffs().subDict("sources"), iter)
     {
         fieldSu_.set
         (
             iter().keyword(),
-            objectFunction1::New<VolField>
-            (
-                "explicit",
-                iter().dict(),
-                iter().keyword(),
-                mesh(),
-                false
-            ).ptr()
+            new unknownTypeFunction1("explicit", iter().dict())
         );
         fieldSp_.set
         (
             iter().keyword(),
-            Function1<scalar>::New
-            (
-                "implicit",
-                iter().dict()
-            ).ptr()
+            Function1<scalar>::New("implicit", iter().dict()).ptr()
         );
     }
 }
