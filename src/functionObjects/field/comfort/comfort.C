@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2019 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2019-2021 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -96,7 +96,7 @@ Foam::dimensionedScalar Foam::functionObjects::comfort::Trad() const
             << "The calculated mean wall radiation temperature is out of the\n"
             << "bounds specified in EN ISO 7730:2006\n"
             << "Valid range is 10 degC < T < 40 degC\n"
-            << "The actual value is: " << Trad - 273.15 << nl << endl;
+            << "The actual value is: " << Trad.value() - 273.15 << nl << endl;
     }
 
     return Trad;
