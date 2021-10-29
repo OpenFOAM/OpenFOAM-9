@@ -603,7 +603,7 @@ Foam::scalar Foam::TDACChemistryModel<ThermoType>::solve
             << "    " << nActiveSpecies/nAvg << endl;
     }
 
-    if (Pstream::parRun())
+    if (reduced && Pstream::parRun())
     {
         List<bool> active(composition.active());
         Pstream::listCombineGather(active, orEqOp<bool>());
