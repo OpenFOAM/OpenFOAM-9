@@ -69,7 +69,11 @@ void Foam::fv::limitPressure::readCoeffs()
 
         forAll(pbf, patchi)
         {
-            if (pbf[patchi].fixesValue())
+            if
+            (
+                pbf[patchi].fixesValue()
+             || isA<calculatedFvPatchField<scalar>>(pbf[patchi])
+            )
             {
                 pLimits = true;
 
