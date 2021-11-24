@@ -98,17 +98,14 @@ else
 
 phi = phiHbyA + p_rghEqn.flux();
 
-// Explicitly relax pressure for momentum corrector
-p_rgh.relax();
-
-p = p_rgh + rho*gh + pRef;
-
 if (mesh.steady())
 {
     #include "incompressible/continuityErrs.H"
 }
 else
 {
+    p = p_rgh + rho*gh + pRef;
+
     const bool constrained = fvConstraints.constrain(p);
 
     // Thermodynamic density update
@@ -122,6 +119,11 @@ else
     #include "rhoEqn.H"
     #include "compressibleContinuityErrs.H"
 }
+
+// Explicitly relax pressure for momentum corrector
+p_rgh.relax();
+
+p = p_rgh + rho*gh + pRef;
 
 // Correct the momentum source with the pressure gradient flux
 // calculated from the relaxed pressure
@@ -142,7 +144,7 @@ if (adjustMass && !thermo.incompressible())
     p += (initialMass - fvc::domainIntegrate(thermo.rho()))
         /fvc::domainIntegrate(psi);
     p_rgh = p - rho*gh - pRef;
-    p.correctBoundaryConditions();
+    p_rgh.correctBoundaryConditions();
 }
 
 if (mesh.steady() || pimple.simpleRho() || adjustMass)
