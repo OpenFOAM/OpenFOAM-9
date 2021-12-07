@@ -50,8 +50,8 @@ geometry
         type triSurfaceMesh;
         file "sphere.stl"
 
-        // tolerance   1e-5;   // optional:non-default tolerance on intersections
-        // maxTreeDepth 10;    // optional:depth of octree. Decrease only in case
+        // tolerance   1e-5;  // optional:non-default tolerance on intersections
+        // maxTreeDepth 10;   // optional:depth of octree. Decrease only in case
                               // of memory limitations.
 
         // Per region the patchname. If not provided will be <surface>_<region>.
@@ -95,10 +95,10 @@ castellatedMeshControls
     // actually be a lot less.
     maxGlobalCells 2000000;
 
-    // The surface refinement loop might spend lots of iterations refining just a
-    // few cells. This setting will cause refinement to stop if <= minimumRefine
-    // are selected for refinement. Note: it will at least do one iteration
-    // (unless the number of cells to refine is 0)
+    // The surface refinement loop might spend lots of iterations refining
+    // just a few cells. This setting will cause refinement to stop if <=
+    // minimumRefine are selected for refinement. Note: it will at least do one
+    // iteration (unless the number of cells to refine is 0)
     minRefinementCells 0;
 
     // Allow a certain level of imbalance during refining
@@ -271,6 +271,9 @@ castellatedMeshControls
     // Optional: switch off topological test for cells to-be-squashed
     //           and use geometric test instead
     // useTopologicalSnapDetection false;
+
+    // Extend refinement regions to the span of the surface facet/triangles
+    extendedRefinementSpan true;
 }
 
 // Settings for the snapping.
@@ -438,8 +441,8 @@ addLayersControls
         // default is 0.
         // nSmoothDisplacement 90;
 
-        // (wip)Optional: do not extrude a point if none of the surrounding points is
-        // not extruded. Default is false.
+        // (wip)Optional: do not extrude a point if none of the surrounding
+        // points is not extruded. Default is false.
         // detectExtrusionIsland true;
 
 

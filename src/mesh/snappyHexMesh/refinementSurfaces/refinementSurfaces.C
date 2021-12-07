@@ -334,66 +334,11 @@ Foam::refinementSurfaces::refinementSurfaces
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-// // Count number of triangles per surface region
-// Foam::labelList Foam::refinementSurfaces::countRegions(const triSurface& s)
-// {
-//     const geometricSurfacePatchList& regions = s.patches();
-//
-//     labelList nTris(regions.size(), 0);
-//
-//     forAll(s, triI)
-//     {
-//         nTris[s[triI].region()]++;
-//     }
-//     return nTris;
-// }
-
-
-// // Pre-calculate the refinement level for every element
-// void Foam::refinementSurfaces::wantedRefinementLevel
-// (
-//     const refinementRegions& shells,
-//     const label surfI,
-//     const List<pointIndexHit>& info,    // Indices
-//     const pointField& ctrs,             // Representative coordinate
-//     labelList& minLevelField
-// ) const
-// {
-//     const searchableSurface& geom = allGeometry_[surfaces_[surfI]];
-//
-//     // Get per element the region
-//     labelList region;
-//     geom.getRegion(info, region);
-//
-//     // Initialise fields to region wise minLevel
-//     minLevelField.setSize(ctrs.size());
-//     minLevelField = -1;
-//
-//     forAll(minLevelField, i)
-//     {
-//         if (info[i].hit())
-//         {
-//             minLevelField[i] = minLevel(surfI, region[i]);
-//         }
-//     }
-//
-//     // Find out if triangle inside shell with higher level
-//     // What level does shell want to refine fc to?
-//     labelList shellLevel;
-//     shells.findHigherLevel(ctrs, minLevelField, shellLevel);
-//
-//     forAll(minLevelField, i)
-//     {
-//         minLevelField[i] = max(minLevelField[i], shellLevel[i]);
-//     }
-// }
-
-
-// Precalculate the refinement level for every element of the searchable
-// surface.
 void Foam::refinementSurfaces::setMinLevelFields
 (
-    const refinementRegions& shells
+    const refinementRegions& shells,
+    const scalar level0EdgeLength,
+    const bool extendedRefinementSpan
 )
 {
     forAll(surfaces_, surfI)
@@ -437,22 +382,24 @@ void Foam::refinementSurfaces::setMinLevelFields
             // Find out if triangle inside shell with higher level
             // What level does shell want to refine fc to?
             //
-            // Note: it is not clear for what cases this additional requirement
-            // is beneficial but for triangulated surfaces with triangles that
-            // span refinement regions it introduces unnecessary refinement so
-            // it has been removed.
-            //
-            // This option can be reinstated under a switch if cases are
-            // provided which demonstrate the benefit.
-            /*
-            labelList shellLevel;
-            shells.findHigherLevel(ctrs, minLevelField, shellLevel);
-
-            forAll(minLevelField, i)
+            // Note: for triangulated surfaces with triangles that
+            // span refinement regions it introduces unnecessary refinement
+            if (extendedRefinementSpan)
             {
-                minLevelField[i] = max(minLevelField[i], shellLevel[i]);
+                labelList shellLevel;
+                shells.findHigherLevel
+                (
+                    ctrs,
+                    minLevelField,
+                    level0EdgeLength,
+                    shellLevel
+                );
+
+                forAll(minLevelField, i)
+                {
+                    minLevelField[i] = max(minLevelField[i], shellLevel[i]);
+                }
             }
-            */
 
             // Store minLevelField on surface
             const_cast<searchableSurface&>(geom).setField(minLevelField);
@@ -461,8 +408,6 @@ void Foam::refinementSurfaces::setMinLevelFields
 }
 
 
-// Find intersections of edge. Return -1 or first surface with higher minLevel
-// number.
 void Foam::refinementSurfaces::findHigherIntersection
 (
     const pointField& start,
@@ -532,7 +477,6 @@ void Foam::refinementSurfaces::findHigherIntersection
             return;
         }
     }
-
 
 
     // Work arrays
