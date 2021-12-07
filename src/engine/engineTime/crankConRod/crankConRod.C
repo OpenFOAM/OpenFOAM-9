@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2017-2019 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2017-2021 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -41,12 +41,13 @@ namespace Foam
 void Foam::crankConRod::timeAdjustment()
 {
     deltaT_  = degToTime(deltaT_);
+    beginTime_ = degToTime(beginTime_);
     endTime_ = degToTime(endTime_);
 
     if
     (
         writeControl_ == writeControl::runTime
-        || writeControl_ == writeControl::adjustableRunTime
+     || writeControl_ == writeControl::adjustableRunTime
     )
     {
         writeInterval_ = degToTime(writeInterval_);
