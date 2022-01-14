@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2020 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2022 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -110,6 +110,7 @@ void Foam::Time::readDict()
     }
 
     controlDict_.readIfPresent("timePrecision", precision_);
+    curPrecision_ = precision_;
 
     // stopAt at 'endTime' or a specified value
     // if nothing is specified, the endTime is zero
