@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2023 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -48,13 +48,12 @@ int main(int argc, char *argv[])
 
     {
         dictionary dict;
-        dict.add("aaOPENMPIcc", 1);
+        dict.add("aaOpenFOAMcc", 1);
 
-        string s("DDD${aa${WM_MPLIB}cc}EEE");
+        string s("DDD${aa${WM_PROJECT}cc}EEE");
         stringOps::inplaceExpand(s, dict, true, false);
         Info<< "variable expansion:" << s << endl;
     }
-
 
     Info<< nl
         << "FOAM_CASE=" << getEnv("FOAM_CASE") << nl
